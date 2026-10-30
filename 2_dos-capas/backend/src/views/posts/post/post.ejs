@@ -1,0 +1,70 @@
+<li>
+    <%= post.username %>
+</li>
+<li>
+    <%= post.caption %>
+</li>
+<li><img src="../uploads/<%= post.image_filename %>" alt="Post Image" width="300"></li>
+<% if (locals.username===post.username) { %>
+    <li><a href="/posts/delete-post/<%= post.id %>">Borrar Post</a></li>
+    <% } %>
+
+        <li>
+            <form action="/like/switch-like/<%= post.id %>" method="GET" enctype="multipart/form-data">
+                <button>Like</button>
+            </form>
+
+            <p><strong>Me gusta:</strong> <span id="like-count-<%= post.id %>"></span></p>
+
+            <script>
+                fetch('/like/count/<%= post.id %>', { headers: { Accept: 'application/json' } })
+                    .then(res => res.json())
+                    .then(data => {
+                        document.getElementById('like-count-<%= post.id %>').textContent = data.count;
+                    });
+
+                fetch('/like/doILike/<%= post.id %>', { headers: { Accept: 'application/json' } })
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.liked) {
+                            document.querySelector('form[action="/like/switch-like/<%= post.id %>"] button').textContent = 'Unlike';
+                        }
+                    });
+            </script>
+
+            <!-- COMENTARIOS -->
+        <li>
+            <p><strong>Comentarios:</strong></p>
+
+            <form action="/comments/create/<%= post.id %>" method="POST">
+                <input type="text" name="comment" placeholder="Escribe un comentario" required>
+                <button type="submit">Comentar</button>
+            </form>
+
+            <div id="comments-<%= post.id %>"></div>
+
+            <script>
+                fetch('/comments/list/<%= post.id %>')
+                    .then(res => res.json())
+                    .then(comments => {
+                        const container = document.getElementById('comments-<%= post.id %>');
+                        comments.forEach(comment => {
+                            if (comment.username === '<%= username %>') {
+                                container.innerHTML += `<p>${comment.username}: ${comment.content}</p>
+                                <form action="/comments/delete/${comment.id}" method="POST"><button>Borrar</button></form>`;
+                            } else {
+                                container.innerHTML += `<p>${comment.username}: ${comment.content}</p>`;
+                            }
+                        });
+                    });
+            </script>
+        </li>
+
+
+
+
+
+        <p>
+            <%= post.id %>
+        </p>
+        </li>

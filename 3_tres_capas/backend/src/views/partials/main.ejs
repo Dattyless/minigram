@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <header>
+    <h1>Minigram</h1>
+<a href="/auth/register">Register</a>
+<a href="/auth/login">Login</a>
+<a href="/auth/logout">Logout</a>
+<a href="/posts/create-post">Crear Post</a>
+<a href="/posts/feed">Feed</a>
+</header>
+
+<% if (locals.username) { %>
+    <p>Bienvenido, <%= locals.username %>!</p>
+<% } else { %>
+    <p>No has iniciado sesión.</p>
+<% } %>
+
+<main>
+
+</main>
+
+</body>
+</html>

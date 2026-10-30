@@ -1,0 +1,12 @@
+<%- include('../partials/main') %>
+
+<main>
+    <h1>Create Post</h1>
+    <form action="/posts/create-post" method="POST" enctype="multipart/form-data">
+        <label for="caption">Descripcion:</label>
+        <textarea id="caption" name="caption" required></textarea><br><br>
+        <label for="image">Image:</label>
+        <input type="file" id="image" name="image" accept="image/*" required><br><br>
+        <button type="submit">Crear Post</button>
+    </form>
+</main>

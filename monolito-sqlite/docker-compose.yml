@@ -1,0 +1,14 @@
+services:
+  monolito:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    container_name: monolito
+    ports:
+      - "3000:3000"
+    environment:
+      - DB_HOST=localhost
+      - DB_PORT=5432
+      - NAME=monolito
+      - DB_USER=usuario
+      - DB_PASSWORD=123456
