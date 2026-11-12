@@ -14,18 +14,14 @@ import path from 'path';
 const mainrouter = Router()
 
 
-//Creamos ruta protegida
+// Ruta protegida de prueba.
 mainrouter.get('/protected', isAuth, (req, res) => {
   res.send('Ruta protegida');
 });
 
-//Raiz
+// Página principal.
 mainrouter.get('/', (req, res) => {
   res.render('index')
 })
 
 export default mainrouter;
-//registro
-
-
-

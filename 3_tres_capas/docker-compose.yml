@@ -29,7 +29,8 @@ services:
     networks:
       - dos_capas_network
     depends_on:
-      - bbdd
+      db-seed:
+        condition: service_completed_successfully
 
   bbdd:
     image: postgres:18.6-alpine3.24
@@ -39,11 +40,46 @@ services:
       POSTGRES_PASSWORD: "123456"
       POSTGRES_DB: monolito
     volumes:
-      # Los scripts se ejecutan en orden alfabético al crear la base de datos.
-      - ./bbdd/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql
-      - ./bbdd/seed.sql:/docker-entrypoint-initdb.d/02-seed.sql
+      # Volumen nombrado para que los datos sobrevivan a los reinicios.
+      - bbdd_data:/var/lib/postgresql
+      # En la primera inicialización PostgreSQL ejecuta estos scripts en orden.
+      - ./bbdd/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql:ro
+      - ./bbdd/seed.sql:/docker-entrypoint-initdb.d/02-seed.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U usuario -d monolito"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
     networks:
       - dos_capas_network
+
+  # Aplica esquema y seed en cada "docker compose up".
+  # El seed es idempotente, así que repetirlo no duplica datos.
+  db-seed:
+    image: postgres:18.6-alpine3.24
+    container_name: db-seed
+    environment:
+      PGPASSWORD: "123456"
+    volumes:
+      - ./bbdd/schema.sql:/seed/01-schema.sql:ro
+      - ./bbdd/seed.sql:/seed/02-seed.sql:ro
+    command:
+      - sh
+      - -c
+      - |
+        set -e
+        psql -h bbdd -U usuario -d monolito -v ON_ERROR_STOP=1 -f /seed/01-schema.sql
+        psql -h bbdd -U usuario -d monolito -v ON_ERROR_STOP=1 -f /seed/02-seed.sql
+    depends_on:
+      bbdd:
+        condition: service_healthy
+    restart: "no"
+    networks:
+      - dos_capas_network
+
+volumes:
+  bbdd_data:
 
 networks:
   dos_capas_network:

@@ -12,4 +12,4 @@ export const storage = multer.diskStorage({
 })
 
 
-export const upload = multer({ storage }); //carpeta donde se guardaran las imagnes
+export const upload = multer({ storage }); // Carpeta donde se guardan las imágenes.

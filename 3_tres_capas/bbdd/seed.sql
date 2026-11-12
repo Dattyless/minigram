@@ -1,11 +1,13 @@
 -- 1) Usuarios
 INSERT INTO users (username, email, password, avatar_filename)
 VALUES
-    ('ana',   'ana@minigram.com',   'hash_pass_a', NULL),
-    ('luis',  'luis@minigram.com',  'hash_pass_a', NULL),
-    ('marta', 'marta@minigram.com', 'hash_pass_a', NULL),
-    ('pedro', 'pedro@minigram.com', 'hash_pass_a', NULL)
-ON CONFLICT (username) DO NOTHING;
+    ('ana',   'ana@minigram.com',   '$2b$10$futM4Ad.ptzfwnaKUVBC2OqFqO4wQM4MGiTGheL3nNSp7An8vhGlG', '1.png'),
+    ('luis',  'luis@minigram.com',  '$2b$10$futM4Ad.ptzfwnaKUVBC2OqFqO4wQM4MGiTGheL3nNSp7An8vhGlG', '2.png'),
+    ('marta', 'marta@minigram.com', '$2b$10$futM4Ad.ptzfwnaKUVBC2OqFqO4wQM4MGiTGheL3nNSp7An8vhGlG', '3.jpg'),
+    ('pedro', 'pedro@minigram.com', '$2b$10$futM4Ad.ptzfwnaKUVBC2OqFqO4wQM4MGiTGheL3nNSp7An8vhGlG', '4.png')
+ON CONFLICT (username) DO UPDATE SET
+    password = EXCLUDED.password,
+    avatar_filename = EXCLUDED.avatar_filename;
 
 -- 2) Posts
 INSERT INTO posts (user_id, caption, image_filename)

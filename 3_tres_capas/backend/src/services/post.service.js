@@ -37,7 +37,7 @@ export const createPost2 = async (req, res) => {
     res.render('posts/create-post');
 };
 
-// Para eliminar un post
+// Elimina un post (solo si pertenece al usuario).
 export const eliminarPost = async (req, res) => {
     try {
         const { id } = req.params;
@@ -90,7 +90,7 @@ export const feed = async (req, res) => {
         // Uno posts con users para mostrar el nombre de quien publicó.
         // El post más nuevo sale primero.
         const postsResult = await db.query(`
-            SELECT posts.id, posts.caption, posts.image_filename, users.username
+            SELECT posts.id, posts.caption, posts.image_filename, users.username, users.avatar_filename
             FROM posts
             INNER JOIN users ON posts.user_id = users.id
             ORDER BY posts.id DESC LIMIT 20

@@ -3,18 +3,15 @@ import { isAuth } from '../middlewares/auth.js';
 import db from '../database/database.js';
 const likesRoute = Router()
 import { doIlike, countLike, switchLike } from '../services/likes.service.js'
-//metodos
 
-//devulve cintador de likes
+// Devuelve el contador de likes de un post.
 likesRoute.get('/count/:postId', isAuth, countLike)
 
-//nos permite cargar los likes de un post especifico
+// Da o quita el like del usuario en un post.
 likesRoute.get('/switch-like/:postId', isAuth, switchLike);
 
-//nos da si el usuario en especifico a q le ha dado like
+// Indica si el usuario ha dado like a un post.
 likesRoute.get('/doILike/:postId', isAuth, doIlike);
 
-
-
-//al dina exoirtamos el router
+// Exportamos el router.
 export default likesRoute;

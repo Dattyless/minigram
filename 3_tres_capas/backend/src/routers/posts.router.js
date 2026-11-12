@@ -14,9 +14,7 @@ postsrouter.post('/create-post', isAuth, upload.single('image'), createPost);
 
 postsrouter.get('/delete-post/:id', isAuth, eliminarPost)
 
-// Dejo el feed sin isAuth porque es una ruta de lectura que consume Angular.
-// Antes tenía isAuth y, si no había cookie, el backend redirigía al login;
-// el frontend recibía HTML en vez del JSON de los posts y no podía pintarlos.
-postsrouter.get('/feed', feed )
+// El feed solo se puede leer con un token válido: si no hay sesión, responde 401.
+postsrouter.get('/feed', isAuth, feed)
 
 export default postsrouter;
