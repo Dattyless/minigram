@@ -1,0 +1,56 @@
+@if (post(); as post) {
+  <mat-card class="post-card" appearance="outlined">
+    <mat-card-header>
+      <div mat-card-avatar class="post-avatar">
+        @if (avatarUrl()) {
+          <img [src]="avatarUrl()" [alt]="'Foto de perfil de ' + post.username" />
+        } @else {
+          {{ post.username.charAt(0).toUpperCase() }}
+        }
+      </div>
+
+      <mat-card-title>{{ post.username }}</mat-card-title>
+      <mat-card-subtitle>Publicación</mat-card-subtitle>
+
+      <div class="post-header-actions">
+        <button
+          matIconButton
+          type="button"
+          [disabled]="deleting()"
+          (click)="deletePost()"
+          [attr.aria-label]="'Borrar publicación de ' + post.username"
+        >
+          <mat-icon>delete</mat-icon>
+        </button>
+      </div>
+    </mat-card-header>
+
+    <img mat-card-image [src]="imageUrl()" [alt]="post.caption || 'Publicación'" />
+
+    <mat-card-content>
+      <p>
+        <strong>{{ post.username }}:</strong>
+        {{ post.caption }}
+      </p>
+
+      @if (deleteError()) {
+        <p class="delete-error" role="alert">{{ deleteError() }}</p>
+      }
+    </mat-card-content>
+
+    <mat-card-actions class="post-actions">
+      <button
+        type="button"
+        class="like-button"
+        [class.liked]="liked()"
+        [disabled]="liking()"
+        (click)="toggleLike()"
+        [attr.aria-label]="liked() ? 'Quitar me gusta' : 'Dar me gusta'"
+      >
+        <mat-icon>{{ liked() ? 'favorite' : 'favorite_border' }}</mat-icon>
+        <span>{{ likeCount() }}</span>
+      </button>
+    </mat-card-actions>
+    <app-comments [postId]="post.id" />
+  </mat-card>
+}

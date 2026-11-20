@@ -1,0 +1,43 @@
+<div class="comments">
+  @if (loading()) {
+  <p class="comments-status">Cargando comentarios...</p>
+  }
+
+  @for (comment of comments(); track comment.id) {
+  <div class="comment">
+    <span class="comment-avatar">
+      @if (comment.avatar_filename) {
+      <img [src]="api.imageUrl(comment.avatar_filename)" [alt]="'Foto de perfil de ' + comment.username" />
+      } @else {
+      {{ comment.username.charAt(0).toUpperCase() }}
+      }
+    </span>
+
+    <p class="comment-text">
+      <strong>{{ comment.username }}:</strong>
+      {{ comment.content }}
+    </p>
+
+    @if (comment.username === currentUsername) {
+    <button type="button" class="comment-delete" (click)="deleteComment(comment.id)" aria-label="Borrar comentario">
+      ×
+    </button>
+    }
+  </div>
+  } @empty {
+  @if (!loading()) {
+  <p class="comments-status">Todavía no hay comentarios.</p>
+  }
+  }
+
+  @if (errorMessage(); as error) {
+  <p class="comment-error">{{ error }}</p>
+  }
+
+  <form class="comment-form" (submit)="addComment($event)">
+    <input type="text" [value]="newComment()" (input)="updateNewComment($event)" placeholder="Escribe un comentario..." />
+    <button type="submit" [disabled]="sending() || !newComment().trim()">
+      <mat-icon>send</mat-icon>
+    </button>
+  </form>
+</div>

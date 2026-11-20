@@ -1,0 +1,56 @@
+<section class="register">
+  <mat-card appearance="outlined">
+    <mat-card-header>
+      <mat-card-title>Crear cuenta</mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content>
+      <form class="register-form">
+        <mat-form-field>
+          <mat-label>Usuario</mat-label>
+          <input matInput autocomplete="username" [formField]="username" />
+          @for (error of username().errors(); track error) {
+            <mat-error>{{ error.message }}</mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Correo electrónico</mat-label>
+          <input
+            matInput
+            type="email"
+            placeholder="pat@ejemplo.com"
+            autocomplete="email"
+            [formField]="email"
+          />
+          @for (error of email().errors(); track error) {
+            <mat-error>{{ error.message }}</mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Contraseña</mat-label>
+          <input
+            matInput
+            autocomplete="new-password"
+            [type]="hide() ? 'password' : 'text'"
+            [formField]="password"
+          />
+          <button
+            matIconButton
+            matSuffix
+            type="button"
+            (click)="clickEvent($event)"
+            [attr.aria-label]="hide() ? 'Mostrar contraseña' : 'Ocultar contraseña'"
+            [attr.aria-pressed]="hide()"
+          >
+            <mat-icon>{{ hide() ? 'visibility_off' : 'visibility' }}</mat-icon>
+          </button>
+          @for (error of password().errors(); track error) {
+            <mat-error>{{ error.message }}</mat-error>
+          }
+        </mat-form-field>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</section>

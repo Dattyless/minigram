@@ -1,0 +1,15 @@
+@if (restApiService.isLoggedIn()) {
+  <p>Bienvenido, {{ restApiService.getUsername() }}!</p>
+
+  <app-create-post (postCreated)="onPostCreated()" />
+
+  <section class="feed">
+    @for (post of posts(); track post.id) {
+      <app-post [post]="post" (postDeleted)="onPostDeleted($event)" />
+    } @empty {
+      <p class="empty">No hay elementos disponibles</p>
+    }
+  </section>
+} @else {
+  <p>Por favor, inicia sesión para ver el contenido.</p>
+}

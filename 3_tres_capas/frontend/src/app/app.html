@@ -1,0 +1,18 @@
+<mat-toolbar>
+  <span>Minigram</span>
+
+  <span class="spacer"></span>
+
+  <a mat-button routerLink="/">Inicio</a>
+
+  @if (restApiService.isLoggedIn()) {
+    <a mat-button (click)="onLogout()">Cerrar sesión</a>
+  } @else {
+    <a mat-button routerLink="/login">Iniciar sesión</a>
+    <a mat-button routerLink="/register">Registrarse</a>
+  }
+</mat-toolbar>
+
+<main>
+  <router-outlet />
+</main>

@@ -1,0 +1,42 @@
+<mat-card class="create-post-card" appearance="outlined">
+  <mat-card-header>
+    <mat-card-title>Crear publicación</mat-card-title>
+  </mat-card-header>
+
+  <mat-card-content>
+    <form class="create-post-form" novalidate (submit)="submit($event)">
+      <mat-form-field>
+        <mat-label>Descripción</mat-label>
+        <textarea matInput rows="3" [formField]="createForm.caption"></textarea>
+        @for (error of createForm.caption().errors(); track error) {
+          <mat-error>{{ error.message }}</mat-error>
+        }
+      </mat-form-field>
+
+      <div class="image-field">
+        <label for="post-image">Imagen</label>
+        <input
+          #imageInput
+          id="post-image"
+          type="file"
+          accept="image/*"
+          required
+          [attr.aria-invalid]="imageError() ? 'true' : null"
+          [attr.aria-describedby]="imageError() ? 'post-image-error' : null"
+          (change)="onImageChange($event)"
+        />
+        @if (imageError()) {
+          <p id="post-image-error" class="field-error" role="alert">{{ imageError() }}</p>
+        }
+      </div>
+
+      @if (errorMessage()) {
+        <p class="form-error" role="alert">{{ errorMessage() }}</p>
+      }
+
+      <button matButton="filled" type="submit" [disabled]="loading()">
+        {{ loading() ? 'Publicando...' : 'Crear post' }}
+      </button>
+    </form>
+  </mat-card-content>
+</mat-card>

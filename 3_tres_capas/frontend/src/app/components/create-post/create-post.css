@@ -1,0 +1,28 @@
+.create-post-card {
+  width: 100%;
+  max-width: 640px;
+}
+
+.create-post-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-top: 16px;
+}
+
+.image-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.field-error,
+.form-error {
+  margin: 0;
+  color: var(--mat-sys-error);
+  font: var(--mat-sys-body-small);
+}
+
+.create-post-form button[type='submit'] {
+  align-self: flex-end;
+}

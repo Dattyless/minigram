@@ -1,0 +1,9 @@
+.feed {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.empty {
+  color: var(--mat-sys-on-surface-variant);
+}

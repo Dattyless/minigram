@@ -1,0 +1,16 @@
+.register {
+  display: flex;
+  justify-content: center;
+}
+
+.register mat-card {
+  width: 100%;
+  max-width: 400px;
+}
+
+.register-form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-top: 16px;
+}

@@ -1,0 +1,26 @@
+.login {
+  display: flex;
+  justify-content: center;
+}
+
+.login mat-card {
+  width: 100%;
+  max-width: 400px;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-top: 16px;
+}
+
+.login-form button[type='submit'] {
+  align-self: flex-end;
+}
+
+.login-error {
+  margin: 0;
+  color: var(--mat-sys-error);
+  font: var(--mat-sys-body-small);
+}
