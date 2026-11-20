@@ -7,7 +7,7 @@ export const createPost = async (req, res) => {
         }
 
         const { caption } = req.body;
-        const username = req.cookies.username;
+        const username = res.locals.user?.username;
 
         // Consultamos el user_id del usuario que está creando el post
         const userResult = await db.query(
@@ -41,7 +41,7 @@ export const createPost2 = async (req, res) => {
 export const eliminarPost = async (req, res) => {
     try {
         const { id } = req.params;
-        const username = req.cookies.username;
+        const username = res.locals.user?.username;
 
         const userResult = await db.query(
             'SELECT id FROM users WHERE username = $1',
@@ -77,7 +77,7 @@ export const eliminarPost = async (req, res) => {
         // Borrar post
         await db.query('DELETE FROM posts WHERE id = $1', [id]);
 
-        res.redirect('/posts/feed');
+        res.json({ success: true });
     } catch (error) {
         console.error(error);
         res.status(500).send('Error al eliminar el post');

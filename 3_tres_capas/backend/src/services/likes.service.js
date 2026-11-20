@@ -26,39 +26,6 @@ export const doIlike = async (req, res) => {
     }
 };
 
-// Devuelve si el usuario ha dado like y el total de likes del post.
-export const likeStatus = async (req, res) => {
-    try {
-        const { postId } = req.params;
-
-        const userResult = await db.query(
-            'SELECT id FROM users WHERE username = $1',
-            [res.locals.user?.username]
-        );
-        const user = userResult.rows[0];
-
-        if (!user) return res.status(401).json({ message: 'Usuario no encontrado' });
-
-        const likeResult = await db.query(
-            'SELECT 1 FROM likes WHERE user_id = $1 AND post_id = $2',
-            [user.id, postId]
-        );
-
-        const countResult = await db.query(
-            'SELECT COUNT(*) AS count FROM likes WHERE post_id = $1',
-            [postId]
-        );
-
-        res.json({
-            liked: likeResult.rows.length > 0,
-            count: Number(countResult.rows[0].count)
-        });
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: 'Error al cargar los likes' });
-    }
-};
-
 // Da o quita el like y devuelve el estado actualizado.
 export const switchLike = async (req, res) => {
     try {
